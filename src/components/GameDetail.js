@@ -7,37 +7,41 @@ import { useSelector } from "react-redux";
 
 const GameDetail = () => {
   // Data
-  const { screen, game } = useSelector((state) => state.detail);
+  const { screen, game, isLoading } = useSelector((state) => state.detail);
   return (
-    <CardShadow>
-      <Detail>
-        <div className='stats'>
-          <div className='rating'>
-            <h3>{game.name}</h3>
-            <p>Rating: {game.rating}</p>
-          </div>
-          <div className='info'>
-            <h3>Platforms</h3>
-            <div className='platforms'>
-              {game.platforms.map((data) => (
-                <h3 key={data.platform.id}>{data.platform.name}</h3>
+    <>
+      {!isLoading && (
+        <CardShadow>
+          <Detail>
+            <Stats>
+              <div className='rating'>
+                <h3>{game.name}</h3>
+                <p>Rating: {game.rating}</p>
+              </div>
+              <Info>
+                <h3>Platforms</h3>
+                <Platforms>
+                  {game.platforms.map((data) => (
+                    <h3 key={data.platform.id}>{data.platform.name}</h3>
+                  ))}
+                </Platforms>
+              </Info>
+            </Stats>
+            <Media>
+              <img src={game.background_image} alt={game.background_image} />
+            </Media>
+            <Description>
+              <p>{game.description_raw}</p>
+            </Description>
+            <div className='gallery'>
+              {screen.results.map((screen) => (
+                <img key={screen.id} src={screen.image} alt={screen.image} />
               ))}
             </div>
-          </div>
-        </div>
-        <div className='media'>
-          <img src={game.background_image} alt={game.background_image} />
-        </div>
-        <div className='description'>
-          <p>{game.description_raw}</p>
-        </div>
-        <div className='gallery'>
-          {screen.results.map((screen) => (
-            <img key={screen.id} src={screen.image} alt={screen.image} />
-          ))}
-        </div>
-      </Detail>
-    </CardShadow>
+          </Detail>
+        </CardShadow>
+      )}
+    </>
   );
 };
 
@@ -66,7 +70,7 @@ const CardShadow = styled(motion.div)`
 const Detail = styled(motion.div)`
   width: 80%;
   border-radius: 1rem;
-  padding: 2rem 20rem;
+  padding: 2rem 5rem;
   background: white;
   position: absolute;
   left: 10%;
@@ -75,6 +79,37 @@ const Detail = styled(motion.div)`
   img {
     width: 100%;
   }
+`;
+
+const Stats = styled(motion.div)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const Info = styled(motion.div)`
+  text-align: center;
+`;
+
+const Platforms = styled(motion.div)`
+  display: flex;
+  justify-content: space-evenly;
+
+  img {
+    margin-left: 3rem;
+  }
+`;
+
+const Media = styled(motion.div)`
+  margin-top: 5rem;
+
+  img {
+    width: 100%;
+  }
+`;
+
+const Description = styled(motion.div)`
+  margin: 5rem 0rem;
 `;
 
 export default GameDetail;
